@@ -1,13 +1,15 @@
 import { Map } from 'immutable'
 
 export default function reducer(state = { turn: 'X', board: Map() }, action) {
-  console.log(state.board)
   switch (action.type) {
     case 'MOVE':
-      // winner(state.board)
-      return {
-        turn: action.nextTurn,
-        board: state.board.setIn(action.coor, action.currTurn),
+      if (winner(state.board)) {
+        return winner(state.board)
+      } else {
+        return {
+          turn: action.nextTurn,
+          board: state.board.setIn(action.coor, action.currTurn),
+        }
       }
     default:
       return state
@@ -19,20 +21,20 @@ export const move = (turn, coor) => {
   return { type: 'MOVE', currTurn: turn, nextTurn: nextTurn, coor: coor }
 }
 
-const streak = (board, coor1, coor2, coor3) => {
-  // Loop through board
+export const streak = (board, coor1, coor2, coor3) => {
+  // const first = board.getIn(coor1)
+  // const second = board.getIn(coor2)
+  // const third = board.getIn(coor3)
+  console.log(board.getState())
 
-  if (board[coor1] === '_' || board[coor2] === '_' || board[coor3] === '_')
-    return null
-  if (board[coor1] === 'X' && board[coor2] === 'X' && board[coor3] === 'X')
-    return 'X'
-  if (board[coor1] === 'O' && board[coor2] === 'O' && board[coor3] === 'O')
-    return 'O'
-
-  return 'draw'
+  // if (!first || !second || !third) return null
+  // if (first === 'X' && second === 'X' && third === 'X') return 'X'
+  // if (first === 'O' && second === 'O' && third === 'O') return 'O'
+  // return 'draw'
 }
 
 const winner = board => {
+  console.log(board.getState())
   const testResults = [
     // Row winners
     streak(board, [0, 0], [0, 1], [0, 2]),

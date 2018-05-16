@@ -1,6 +1,6 @@
 import inquirer from 'inquirer'
 
-import gameReducer, { move } from './game'
+import gameReducer, { move, streak } from './game'
 import { createStore } from 'redux'
 
 const printBoard = () => {
@@ -15,6 +15,7 @@ const printBoard = () => {
 
 const getInput = player => async () => {
   const { turn } = game.getState()
+  streak(game, [0, 0], [0, 1], [0, 2])
   if (turn !== player) return
   const ans = await inquirer.prompt([
     {
