@@ -21,7 +21,9 @@ export const move = (turn, coor) => {
 
 const streak = (board, coor1, coor2, coor3) => {
   // Loop through board
-  if (!board[coor1] && !board[coor2] && !board[coor3]) return 'ongoing'
+
+  if (board[coor1] === '_' || board[coor2] === '_' || board[coor3] === '_')
+    return null
   if (board[coor1] === 'X' && board[coor2] === 'X' && board[coor3] === 'X')
     return 'X'
   if (board[coor1] === 'O' && board[coor2] === 'O' && board[coor3] === 'O')
@@ -31,14 +33,27 @@ const streak = (board, coor1, coor2, coor3) => {
 }
 
 const winner = board => {
-  if ('X wins') return 'X'
-  if ('O wins') return 'O'
-  if ('ongoing') return null
-  if ('draw') return 'draw'
+  const testResults = [
+    // Row winners
+    streak(board, [0, 0], [0, 1], [0, 2]),
+    streak(board, [1, 0], [1, 1], [1, 2]),
+    streak(board, [2, 0], [2, 1], [2, 2]),
+    // Column winners
+    streak(board, [0, 0], [1, 0], [2, 0]),
+    streak(board, [0, 1], [1, 1], [2, 1]),
+    streak(board, [0, 2], [1, 2], [2, 2]),
+    // Diagnol winners
+    streak(board, [0, 0], [1, 1], [2, 2]),
+    streak(board, [2, 0], [1, 1], [0, 2]),
+  ]
+
+  for (let i = 0; i < testResults.length; i++) {
+    if (testResults[i]) return testResults[i]
+    else return null
+  }
 }
 
 /*  
-
       O _ _
       X O X
       _ _ X
@@ -48,5 +63,4 @@ const winner = board => {
         1: Map { 0: "X", 1: "O", 2: "X" }, 
         2: Map {       ,       , 2: "X" } 
       }
-
 */
