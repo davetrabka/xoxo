@@ -1,18 +1,18 @@
-import {Map} from 'immutable'
-// import { createStore } from "redux"
+import { Map } from 'immutable'
 
 export default function reducer(state = { turn: 'X', board: Map() }, action) {
   switch (action.type) {
-    case 'START':
-      return {}
-    case 'MOVE'
-      return 
-    default: 
+    case 'MOVE':
+      return {
+        turn: action.nextTurn,
+        board: state.board.setIn(action.coor, action.currTurn),
+      }
+    default:
       return state
   }
 }
 
-const move = (turn, coor) => {
+export const move = (turn, coor) => {
   const nextTurn = turn === 'X' ? 'O' : 'X'
-  return {type: 'MOVE', turn: nextTurn}
+  return { type: 'MOVE', currTurn: turn, nextTurn: nextTurn, coor: coor }
 }
